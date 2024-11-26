@@ -80,44 +80,50 @@ Core i5, вбудовану відеокарту та 8 GB оперативно�
 
 ```mermaid
 classDiagram
-    class ConsoleUtils {
-        +clear_screen()
-        +input_with_validation(prompt: str, validation_func: Callable, error_message: str): str
-        +confirm_action(prompt: str): bool
-        +validate_phone(phone: str): bool
-        +validate_age(age: str): bool
-        +format_time(time_str: str): str
-        +create_menu(options: dict): int
-        +print_separator()
+    class Database {
+        -filename: str
+        +__init__(filename: str)
+        +ensure_data_directory()
+        +save_data(data: Dict[str, List[Any]])
+        +load_data(): Dict[str, List[Any]]
+        +clear_data()
     }
 
-    class ValidationFunctions {
+    class FileSystem {
         <<interface>>
-        +validate_phone(phone: str): bool
-        +validate_age(age: str): bool
+        +create_directory()
+        +write_file()
+        +read_file()
+        +delete_file()
     }
 
-    class MenuSystem {
+    class DataValidator {
         <<interface>>
-        +create_menu(options: dict): int
-        +print_separator()
+        +validate_json_structure()
+        +validate_data_types()
     }
 
-    class InputSystem {
+    class JsonHandler {
         <<interface>>
-        +input_with_validation(prompt: str, validation_func: Callable, error_message: str): str
-        +confirm_action(prompt: str): bool
+        +serialize_data()
+        +deserialize_data()
+        +handle_errors()
     }
 
-    class TimeFormatter {
+    class DataStructure {
         <<interface>>
-        +format_time(time_str: str): str
+        +vets: List[Veterinarian]
+        +clients: List[Client]
     }
 
-    ConsoleUtils --> ValidationFunctions : uses
-    ConsoleUtils --> MenuSystem : uses
-    ConsoleUtils --> InputSystem : uses
-    ConsoleUtils --> TimeFormatter : uses
+    Database --> FileSystem : uses
+    Database --> DataValidator : uses
+    Database --> JsonHandler : uses
+    Database --> DataStructure : manages
+    Database ..> Client : uses
+    Database ..> Veterinarian : uses
+    Database ..> Pet : uses
+    Database ..> Appointment : uses
 ```
 
 
