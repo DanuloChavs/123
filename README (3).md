@@ -80,50 +80,74 @@ Core i5, вбудовану відеокарту та 8 GB оперативно�
 
 ```mermaid
 classDiagram
+    class VetClinicSystem {
+        -db: Database
+        -vets: List[Veterinarian]
+        -clients: List[Client]
+        +__init__()
+        +load_data()
+        +save_data()
+        +main_menu()
+        +run()
+        +add_client()
+        +add_veterinarian()
+        +make_appointment()
+        +view_schedule()
+        +search_client()
+        +show_all_clients()
+        +show_all_vets()
+        +edit_data()
+        +delete_data()
+    }
+
     class Database {
-        -filename: str
-        +__init__(filename: str)
-        +ensure_data_directory()
-        +save_data(data: Dict[str, List[Any]])
-        +load_data(): Dict[str, List[Any]]
-        +clear_data()
+        +load_data()
+        +save_data()
     }
 
-    class FileSystem {
-        <<interface>>
-        +create_directory()
-        +write_file()
-        +read_file()
-        +delete_file()
+    class Utils {
+        +clear_screen()
+        +input_with_validation()
+        +confirm_action()
+        +validate_phone()
+        +validate_age()
+        +create_menu()
     }
 
-    class DataValidator {
-        <<interface>>
-        +validate_json_structure()
-        +validate_data_types()
+    class Client {
+        +id: int
+        +surname: str
+        +name: str
+        +pets: List[Pet]
     }
 
-    class JsonHandler {
-        <<interface>>
-        +serialize_data()
-        +deserialize_data()
-        +handle_errors()
+    class Veterinarian {
+        +id: int
+        +surname: str
+        +name: str
+        +appointments: List[Appointment]
     }
 
-    class DataStructure {
-        <<interface>>
-        +vets: List[Veterinarian]
-        +clients: List[Client]
+    class Pet {
+        +id: int
+        +name: str
+        +species: str
     }
 
-    Database --> FileSystem : uses
-    Database --> DataValidator : uses
-    Database --> JsonHandler : uses
-    Database --> DataStructure : manages
-    Database ..> Client : uses
-    Database ..> Veterinarian : uses
-    Database ..> Pet : uses
-    Database ..> Appointment : uses
+    class Appointment {
+        +time: str
+        +client_id: int
+        +pet_id: int
+    }
+
+    VetClinicSystem --> Database : uses
+    VetClinicSystem --> Utils : uses
+    VetClinicSystem --> Client : manages
+    VetClinicSystem --> Veterinarian : manages
+    VetClinicSystem --> Pet : manages
+    VetClinicSystem --> Appointment : manages
+    Client --> Pet : has
+    Veterinarian --> Appointment : has
 ```
 
 
