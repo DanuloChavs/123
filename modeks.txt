@@ -1,0 +1,77 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam classFontSize 14
+skinparam classAttributeFontSize 12
+
+class Pet {
+    +name: str
+    +species: str
+    +breed: str
+    +age: int
+    +id: int = 0
+    +medical_history: List[str] = None
+    --
+    +__post_init__()
+    +to_dict(): dict
+    +{static} from_dict(data: dict): Pet
+}
+
+class Client {
+    +id: int
+    +surname: str
+    +name: str
+    +patronymic: str
+    +phone: str
+    +pets: List[Pet]
+    --
+    +get_full_name(): str
+    +to_dict(): dict
+    +{static} from_dict(data: dict): Client
+}
+
+class Appointment {
+    +time: str
+    +is_available: bool = True
+    +client_id: Optional[int] = None
+    +pet_id: Optional[int] = None
+    +notes: str = ""
+    --
+    +to_dict(): dict
+    +{static} from_dict(data: dict): Appointment
+}
+
+class Veterinarian {
+    +id: int
+    +surname: str
+    +name: str
+    +patronymic: str
+    +work_hours: dict
+    +appointments: List[Appointment]
+    --
+    +get_full_name(): str
+    +to_dict(): dict
+    +{static} from_dict(data: dict): Veterinarian
+}
+
+' Відносини між класами
+Client "1" *-- "0..*" Pet : має >
+Veterinarian "1" *-- "0..*" Appointment : має >
+Appointment "0..1" -- "1" Pet : посилається на >
+Appointment "0..1" -- "1" Client : належить >
+
+note right of Pet::medical_history
+    Список медичної історії
+    Ініціалізується як пустий список
+end note
+
+note right of Client::get_full_name
+    Повертає повне ім'я у форматі:
+    "Прізвище Ім'я По батькові"
+end note
+
+note right of Veterinarian::work_hours
+    Словник з робочими годинами
+    Наприклад: {'start': '09:00', 'end': '18:00'}
+end note
+
+@enduml
