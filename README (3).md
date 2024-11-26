@@ -80,56 +80,44 @@ Core i5, вбудовану відеокарту та 8 GB оперативно�
 
 ```mermaid
 classDiagram
-    class Pet {
-        +name: str
-        +species: str
-        +breed: str
-        +age: int
-        +id: int
-        +medical_history: List[str]
-        +__post_init__()
-        +to_dict()
-        +from_dict(data)
+    class ConsoleUtils {
+        +clear_screen()
+        +input_with_validation(prompt: str, validation_func: Callable, error_message: str): str
+        +confirm_action(prompt: str): bool
+        +validate_phone(phone: str): bool
+        +validate_age(age: str): bool
+        +format_time(time_str: str): str
+        +create_menu(options: dict): int
+        +print_separator()
     }
 
-    class Client {
-        +id: int
-        +surname: str
-        +name: str
-        +patronymic: str
-        +phone: str
-        +pets: List[Pet]
-        +get_full_name()
-        +to_dict()
-        +from_dict(data)
+    class ValidationFunctions {
+        <<interface>>
+        +validate_phone(phone: str): bool
+        +validate_age(age: str): bool
     }
 
-    class Appointment {
-        +time: str
-        +is_available: bool
-        +client_id: Optional[int]
-        +pet_id: Optional[int]
-        +notes: str
-        +to_dict()
-        +from_dict(data)
+    class MenuSystem {
+        <<interface>>
+        +create_menu(options: dict): int
+        +print_separator()
     }
 
-    class Veterinarian {
-        +id: int
-        +surname: str
-        +name: str
-        +patronymic: str
-        +work_hours: dict
-        +appointments: List[Appointment]
-        +get_full_name()
-        +to_dict()
-        +from_dict(data)
+    class InputSystem {
+        <<interface>>
+        +input_with_validation(prompt: str, validation_func: Callable, error_message: str): str
+        +confirm_action(prompt: str): bool
     }
 
-    Client "1" --> "*" Pet : has
-    Veterinarian "1" --> "*" Appointment : has
-    Appointment --> Pet : refers to
-    Appointment --> Client : belongs to
+    class TimeFormatter {
+        <<interface>>
+        +format_time(time_str: str): str
+    }
+
+    ConsoleUtils --> ValidationFunctions : uses
+    ConsoleUtils --> MenuSystem : uses
+    ConsoleUtils --> InputSystem : uses
+    ConsoleUtils --> TimeFormatter : uses
 ```
 
 
