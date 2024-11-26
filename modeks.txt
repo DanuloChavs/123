@@ -1,0 +1,53 @@
+```mermaid
+classDiagram
+    class Pet {
+        +name: str
+        +species: str
+        +breed: str
+        +age: int
+        +id: int
+        +medical_history: List[str]
+        +__post_init__()
+        +to_dict()
+        +from_dict(data)
+    }
+
+    class Client {
+        +id: int
+        +surname: str
+        +name: str
+        +patronymic: str
+        +phone: str
+        +pets: List[Pet]
+        +get_full_name()
+        +to_dict()
+        +from_dict(data)
+    }
+
+    class Appointment {
+        +time: str
+        +is_available: bool
+        +client_id: Optional[int]
+        +pet_id: Optional[int]
+        +notes: str
+        +to_dict()
+        +from_dict(data)
+    }
+
+    class Veterinarian {
+        +id: int
+        +surname: str
+        +name: str
+        +patronymic: str
+        +work_hours: dict
+        +appointments: List[Appointment]
+        +get_full_name()
+        +to_dict()
+        +from_dict(data)
+    }
+
+    Client "1" --> "*" Pet : has
+    Veterinarian "1" --> "*" Appointment : has
+    Appointment --> Pet : refers to
+    Appointment --> Client : belongs to
+```
